@@ -1,10 +1,16 @@
+# Introduction
+Terraform workspace default
+Moving within the AWS free tier to avoid excessive charges.
+Services: VPC, ECR, EKS, Code Pipeline, Secrets Manager, S3, RDS, Github Actions, Git.
+
 # Prerequisites
 
 Run `./script.sh` to auto validate all the prerequisites. The script must be executable `sudo chmod +x script.sh`.
 
-- Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html):
+- An AWS Account
+- Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).ç
 - Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-- Create Terraform folder Structure.
+- Define Terraform folder Structure
 ```
 📁 terraform/
  ├── 📁 dev/
@@ -21,7 +27,11 @@ Run `./script.sh` to auto validate all the prerequisites. The script must be exe
  │   ├── monitoring/
  ├── backend.tf
 ```
-- Create S3 bucket to store the tfstate backend. Versioning must be enabled.
+- Create a S3 bucket to store the tfstate backend. Versioning must be enabled
+- Create an AWS Access Key and Secret Key to allow Terraform deploy resources in AWS
+
+# Best Practices
+
 
 # Diagram
 
