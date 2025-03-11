@@ -6,28 +6,14 @@ variable "aws_region" {
   description = "Default AWS region to deploy resources"
 }
 
-variable "aws_access_key" {
-  type = string
-  default = "" # TODO
-  sensitive = true
-  description = "Access Key to allow Terraform connect to AWS" 
-}
-
-variable "aws_secret_key" {
-  type = string
-  default = "" # TODO
-  sensitive = true
-  description = "Secret  Key to allow Terraform connect to AWS"
-}
-
 ## ( -- Networking -- )
-variable "vpc-name" {
-    default = ""
+variable "vpc-name" { # TODO
+    default = "pipeline-tf-aws-vpc"
     description = "Name assigend to the VPC"
 }
 
 variable "vpc-cidr" {
-  default = "192.168.0.0/24"
+  default = "200.200.0.0/24"
   description = "CIDR block assigned to the VPC"
 }
 
