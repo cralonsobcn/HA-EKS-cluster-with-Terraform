@@ -5,15 +5,14 @@ terraform {
       version = "5.90"
     }
   }
+
   backend "s3" {
-    bucket = var.s3_state_backend
-    key    = "path/to/my/key"
-    region = var.region
+    bucket = "cralonso-tfpipeline-eks-project"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
   }
 }
 
 provider "aws" {
   region = var.aws_region
-  secret_key = var.aws_secret_key 
-  access_key = var.aws_access_key # Enables access to AWS --> S3 Bucket
 }
