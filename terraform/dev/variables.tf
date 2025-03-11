@@ -6,7 +6,7 @@ variable "aws_region" {
   description = "Default AWS region to deploy resources"
 }
 
-## ( -- Networking -- )
+## ( -- AWS Networking -- )
 variable "vpc-name" { # TODO
   type = string
   default = "pipeline-tf-aws-vpc"
@@ -32,13 +32,20 @@ variable "subnet-b-cidr" {
 }
 
 variable "subnet-c-cidr" {
-   type = string
+  type = string
   default = "10.0.3.0/24"
   description = "CIDR block assigned to the subnet aws-vpc-subnet-c" 
+}
+
+## ( -- AWS  IAM -- )
+variable "eks-cluster-role-name" {
+  type = string
+  default = "value"
+  description = "Name of the EKS Cluster Role"
 }
 
 ## ( -- AWS CodePipeline -- )
 ## ( -- AWS ECR -- )
 ## ( -- AWS EKS -- )
-## ( -- AWS  -- )
+
 
