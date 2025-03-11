@@ -22,9 +22,9 @@ then
 else
     echo "[INFO]: Terraform CLI Already installed"
 fi
+
 # Sets Terraform folder structure
 folder_list=("terraform" "terraform/dev" "terraform/test" "terraform/prod" "terraform/modules")
-
 for folder in ${folder_list[@]}
 do
     if [ ! -d "${HOME}/${folder}" ]
@@ -35,13 +35,22 @@ do
     fi
 done
 
+# At this point you should have an AWS account and have that account logged in with the AWS CLI
+
+# TODO Create an AWS Access Key and Secret Key to allow Terraform deploy resources in AWS
+aws_user=$(aws iam get-user | jq -r '.User.UserName')
+aws_region="us-east-1"
+aws_output=$(aws iam create-access-key --user-name ${aws_user} --region ${aws_region}) 
+TF_VAR_AWS_ACCESS_KEY=$(echo "${aws_output}" | jq -r '.AccessKey.AccessKeyId') # Env
+TF_VAR_AWS_SECRET_KEY=$(echo "${aws_output}" | jq -r '.AccessKey.SecretAccessKey') # Env
+
+
 # S3 bucket to store TF state
 bucket="cralonso-tfpipeline-eks-project"
-region="us-east-1"
-
-if [ ! eval $(aws s3 ls) ]
+aws_region="us-east-1"
+if [ ! eval $(aws s3 ls) ] # TODO filter json output
 then
-    eval $(aws s3 mb s3://${bucket} --region ${region})
+    eval $(aws s3 mb s3://${bucket})
     eval $(aws s3api put-bucket-versioning --bucket ${bucket} --versioning-configuration Status=Enabled)
 else
     echo "[INFO]: ${bucket} already exists"
