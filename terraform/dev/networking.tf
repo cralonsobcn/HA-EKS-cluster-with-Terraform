@@ -17,9 +17,9 @@ resource "aws_security_group" "aws-vpc-sc" {
 
 resource "aws_security_group_rule" "aws-vpc-sc-ingress" {
   type              = "ingress"
-  description = "Allows HTTP, HTTPS and SSH connections from the internet"
-  from_port         = [80, 443, 22]
-  to_port           = [80, 443, 22]
+  description = "Allows HTTP, HTTPS, SSH and MySQL connections from everywhere"
+  from_port         = [80, 443, 22, 3306]
+  to_port           = [80, 443, 22, 3306]
   protocol          = "tcp"
   cidr_blocks       = "0.0.0.0/0"
   security_group_id = aws_security_group.aws-vpc-sc.id
