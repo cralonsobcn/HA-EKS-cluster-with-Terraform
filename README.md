@@ -1,14 +1,29 @@
 # Prerequisites
-## Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html):
-- `$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"`
-- `$ unzip awscliv2.zip`
-- `$ sudo ./aws/install`
-## Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-- `$ wget https://releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip`
-- `$ unzip terraform_1.11.1_linux_amd64.zip`
-- `$ sudo mv terraform/ /usr/local/bin`
-- Install autocomplete: `$ terraform -install-autocomplete`
 
+Run `./script.sh` to auto validate all the prerequisites. The script must be executable `sudo chmod +x script.sh`.
+
+- Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html):
+- Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- Create Terraform folder Structure.
+```
+📁 terraform/
+ ├── 📁 dev/
+ │   ├── main.tf
+ │   ├── versions.tf
+ │   ├── variables.tf
+ │   ├── terraform.tfvars
+ ├── 📁 test/              
+ ├── 📁 prod/  
+ ├── 📁 modules/  
+ │   ├── eks/
+ │   ├── rds/
+ │   ├── networking/
+ │   ├── monitoring/
+ ├── backend.tf
+```
+- Create S3 bucket to store the tfstate backend. Versioning must be enabled.
+
+# Diagram
 
 # **AWS High-Availability Portfolio Project: Step-by-Step Deployment Guide**
 
