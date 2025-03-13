@@ -37,10 +37,16 @@ variable "subnet-c-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-subnet-c" 
 }
 
-## ( -- AWS  IAM -- )
-variable "eks-cluster-role-name" {
+## ( -- AWS EKS -- )
+variable "eks-cluster-name" {
   type = string
-  default = "value"
+  default = "eks-cluster"
+  description = "Name of the EKS Cluster Role"
+}
+
+variable "eks-nodeGroup-name" {
+  type = string
+  default = "eks-mig"
   description = "Name of the EKS Cluster Role"
 }
 
