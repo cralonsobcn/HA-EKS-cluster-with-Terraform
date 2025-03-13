@@ -1,9 +1,9 @@
 ## ( -- IAM EKS Cluster -- ) ##
 resource "aws_iam_role" "eks-cluster-role" {
-  name               = var.eks-cluster-name
+  name               = "eksClusterRole"
   assume_role_policy = data.aws_iam_policy_document.eks-cluster-policy-role.json # Retrieves the policy docuemnt
   tags = {
-    Name = var.eks-cluster-name
+    Name = "eksClusterRole"
   }
 }
 
@@ -12,7 +12,7 @@ resource "aws_iam_role_policy_attachment" "eks-cluster-role-AmazonEKSClusterPoli
   role       = aws_iam_role.eks-cluster-role.name
 }
 
-data "aws_iam_policy_document" "eks-cluster-policy-role" { 
+data "aws_iam_policy_document" "eks-cluster-policy-role" {
   statement {
     effect = "Allow"
 
@@ -43,17 +43,17 @@ resource "aws_iam_role" "eks-nodeGroup-role" {
 
 resource "aws_iam_role_policy_attachment" "eks-nodeGroup-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.eks-nodeGroup-name
+  role       = aws_iam_role.eks-nodeGroup-role.name
 }
 
 resource "aws_iam_role_policy_attachment" "eks-nodeGroup-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.eks-nodeGroup-name
+  role       = aws_iam_role.eks-nodeGroup-role.name
 }
 
 resource "aws_iam_role_policy_attachment" "eks-nodeGroup-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.eks-nodeGroup
+  role       = aws_iam_role.eks-nodeGroup-role.name
 }
 
 ## ( -- IAM CodePipeline -- ) ## TODO

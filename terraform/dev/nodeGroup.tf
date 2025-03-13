@@ -2,10 +2,10 @@ resource "aws_eks_node_group" "eks-node-group" {
   cluster_name    = aws_eks_cluster.eks-cluster.id
   node_group_name = var.eks-nodeGroup-name
   node_role_arn   = aws_iam_role.eks-nodeGroup-role.arn # TODO
-  subnet_ids      = [aws_subnet.aws-vpc-subnet-a, aws_subnet.aws-vpc-subnet-b, aws_subnet.aws-vpc-subnet-c] 
-  ami_type = "AL2_x86_64"
-  disk_size = "2" # Disk size in GiB for worker nodes. Defaults to 50
-  instance_types = "t2.micro"
+  subnet_ids      = [aws_subnet.aws-vpc-subnet-a.id, aws_subnet.aws-vpc-subnet-b.id, aws_subnet.aws-vpc-subnet-c.id]
+  ami_type        = "AL2_x86_64"
+  disk_size       = "2" # Disk size in GiB for worker nodes. Defaults to 50
+  instance_types  = ["t2.micro"]
 
   scaling_config {
     desired_size = 3

@@ -1,8 +1,8 @@
 resource "aws_codepipeline" "codepipeline" {
-  name     = "tf-aws-pipeline"
-  pipeline_type = "v2" # Type of the pipeline. Possible values are: V1 and V2. Default value is V1.
-  depends_on = [ aws_s3_bucket.codepipeline_bucket, aws_vpc.aws-vpc, aws_iam_role.eksClusterRole, iaws_iam_role.codepipeline_role  ] # TODO
-  role_arn = aws_iam_role.codepipeline_role.arn
+  name          = "tf-aws-pipeline"
+  pipeline_type = "v2"                                                                                                               # Type of the pipeline. Possible values are: V1 and V2. Default value is V1.
+  depends_on    = [aws_s3_bucket.codepipeline_bucket, aws_vpc.aws-vpc, aws_iam_role.eksClusterRole, iaws_iam_role.codepipeline_role] # TODO
+  role_arn      = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
     location = aws_s3_bucket.codepipeline_bucket.bucket
@@ -15,17 +15,17 @@ resource "aws_codepipeline" "codepipeline" {
   }
 
   stage { # TODO with GitHub repo
-    name = "Source" 
+    name = "Source"
 
     action { # Github connection requires manual approval in AWS Console. To avoid manual approval use lambda + webhooks
       name             = "Source"
       category         = "Source"
       owner            = "AWS"
-      provider         = "CodeStarSourceConnection" 
-      version          = "1" 
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
       output_artifacts = ["source_output"]
 
-      configuration = { 
+      configuration = {
         ConnectionArn    = aws_codestarconnections_connection.github-repo.arn
         FullRepositoryId = "cralonsobcn/pipeline-tf-aws-eks"
         BranchName       = "master"
@@ -86,8 +86,8 @@ resource "aws_s3_bucket" "codepipeline_bucket" {
 
 # TODO
 resource "aws_s3_bucket_public_access_block" "codepipeline_bucket_pab" {
-  bucket = aws_s3_bucket.codepipeline_bucket.id
-  depends_on = [ aws_s3_bucket.codepipeline_bucket ]
+  bucket     = aws_s3_bucket.codepipeline_bucket.id
+  depends_on = [aws_s3_bucket.codepipeline_bucket]
 
   block_public_acls       = true
   block_public_policy     = true
