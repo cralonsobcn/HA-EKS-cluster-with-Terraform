@@ -2,8 +2,8 @@
 resource "aws_launch_template" "dataplane-node-template" {
   name = "dataplane-node-template"
   description = "Template to be used when setting up a dataplane node"
-
-  image_id = "AL2_x86_64"
+  depends_on = [ aws_eks_cluster.eks-cluster ]
+  image_id = "ami-08b5b3a93ed654d19" # AMAZON Linux 2023 x64
 
   instance_initiated_shutdown_behavior = "terminate"
 
@@ -28,10 +28,11 @@ resource "aws_launch_template" "dataplane-node-template" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
 resource "aws_autoscaling_group" "dataplane-group" {
+  depends_on = [ aws_launch_template.dataplane-node-template ]
   desired_capacity   = 3
   max_size           = 3
   min_size           = 2
-  vpc_zone_identifier = [ aws_subnet.aws-vpc-dataplane-subnet-a.id, aws_subnet.aws-vpc-dataplane-subnet-abid, aws_subnet.aws-vpc-dataplane-subnet-c.id]
+  vpc_zone_identifier = [ aws_subnet.aws-vpc-dataplane-subnet-a.id, aws_subnet.aws-vpc-dataplane-subnet-b.id, aws_subnet.aws-vpc-dataplane-subnet-c.id]
 
   launch_template {
     id      = aws_launch_template.dataplane-node-template.id
