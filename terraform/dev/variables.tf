@@ -7,46 +7,65 @@ variable "aws_region" {
 }
 
 ## ( -- AWS Networking -- )
-variable "vpc-name" { # TODO
+variable "vpc-controlplane-name" {
   type = string
-  default = "pipeline-tf-aws-vpc"
-  description = "Name assigend to the VPC"
+  default = "vpc-controlplane"
+  description = "Name of the VPC assigned to the EKS controlplane"
 }
 
-variable "vpc-cidr" {
-  type = string
-  default = "10.0.0.0/16"
-  description = "CIDR block assigned to the VPC"
+variable "vpc-controlplane-cidr" {
+  type        = string
+  default     = "192.168.0.0/24"
+  description = "CIDR block assigned to the dataplane VPC"
+   
 }
 
-variable "subnet-a-cidr" {
-  type = string
-  default = "10.0.1.0/24"
-  description = "CIDR block assigned to the subnet aws-vpc-subnet-a"
+variable "controlplane-subnet-a-cidr" {
+  type        = string
+  default     = "192.168.0.0/26"
+  description = "CIDR block assigned to the subnet aws-vpc-controlplane-subnet-a"
 }
 
-variable "subnet-b-cidr" {
-  type = string
-  default = "10.0.2.0/24"
-  description = "CIDR block assigned to the subnet aws-vpc-subnet-b"  
+variable "controlplane-subnet-b-cidr" {
+  type        = string
+  default     = "192.168.0.64/26"
+  description = "CIDR block assigned to the subnet aws-vpc-controlplane-subnet-b"
 }
 
-variable "subnet-c-cidr" {
-  type = string
-  default = "10.0.3.0/24"
-  description = "CIDR block assigned to the subnet aws-vpc-subnet-c" 
+variable "vpc-dataplane-name" { # 
+  type        = string
+  default     = "vpc-dataplane"
+  description = "Name of the VPC assigned to the EKS dataplane"
+}
+
+variable "vpc-dataplane-cidr" {
+  type        = string
+  default     = "10.0.0.0/16"
+  description = "CIDR block assigned to the dataplane VPC"
+}
+
+variable "dataplane-subnet-a-cidr" {
+  type        = string
+  default     = "10.0.1.0/24"
+  description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-a"
+}
+
+variable "dataplane-subnet-b-cidr" {
+  type        = string
+  default     = "10.0.2.0/24"
+  description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-b"
+}
+
+variable "dataplane-subnet-c-cidr" {
+  type        = string
+  default     = "10.0.3.0/24"
+  description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-c"
 }
 
 ## ( -- AWS EKS -- )
 variable "eks-cluster-name" {
-  type = string
-  default = "eks-cluster"
-  description = "Name of the EKS Cluster Role"
-}
-
-variable "eks-nodeGroup-name" {
-  type = string
-  default = "eks-mig"
+  type        = string
+  default     = "eks-cluster"
   description = "Name of the EKS Cluster Role"
 }
 
