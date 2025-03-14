@@ -2,14 +2,14 @@ resource "aws_eks_cluster" "eks-cluster" {
   name = var.eks-cluster-name
 
   access_config {
-    authentication_mode = "API"
+    authentication_mode = "API_AND_CONFIG_MAP"
   }
 
   role_arn = aws_iam_role.eks-cluster-role.arn
   version  = "1.31"
 
   vpc_config {
-    subnet_ids = [aws_subnet.aws-vpc-subnet-a.id, aws_subnet.aws-vpc-subnet-b.id, aws_subnet.aws-vpc-subnet-c.id]
+    subnet_ids = [aws_subnet.controlplane-subnet-a-cidr.id, aws_subnet.controlplane-subnet-b-cidr.id]
   }
 
   # Ensure that IAM Role permissions are created before and deleted
