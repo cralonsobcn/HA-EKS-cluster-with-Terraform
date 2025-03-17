@@ -65,12 +65,16 @@ variable "dataplane-subnet-c-cidr" {
 ## ( -- AWS EKS -- )
 variable "eks-cluster-name" {
   type        = string
-  default     = "eks-cluster"
+  default     = "eks-demo"
   description = "Name of the EKS Cluster Role"
 }
 
 ## ( -- AWS CodePipeline -- )
-## ( -- AWS ECR -- )
-## ( -- AWS EKS -- )
 
+## ( -- AWS Compute -- )
+variable "dataplane-ami" {
+  type = string
+  default = "ami-08b5b3a93ed654d19"
+  description = "Amazon Linux 2023 x64"
+}
 
