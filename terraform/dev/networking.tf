@@ -163,35 +163,26 @@ resource "aws_route_table_association" "aws-vpc-dataplane-rt-association-c" {
 
 ## ( -- EKS Control Plane -- )
 
-resource "aws_vpc" "aws-vpc-controlplane" {
-  cidr_block                           = var.vpc-controlplane-cidr
-  enable_dns_hostnames                 = true  # A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.
-  enable_dns_support                   = true  # A boolean flag to enable/disable DNS support in the VPC. Defaults to true.
-  enable_network_address_usage_metrics = false # BILLING. Indicates whether Network Address Usage metrics are enabled for your VPC.
+resource "aws_default_vpc" "aws-vpc-controlplane" {
+
   tags = {
-    Name = var.vpc-controlplane-name
+    Name = "Default VPC"
   }
 }
 
-# Create regional subnet A
-resource "aws_subnet" "aws-vpc-controlplane-subnet-a" {
-  depends_on        = [aws_vpc.aws-vpc-controlplane]
-  vpc_id            = aws_vpc.aws-vpc-controlplane.id 
-  cidr_block        = var.controlplane-subnet-a-cidr
+resource "aws_default_subnet" "aws-vpc-controlplane-subnet-a" {
   availability_zone = "us-east-1a"
+
   tags = {
-    Name = "aws-vpc-controlplane-subnet-a"
+    Name = "Default subnet for us-west-1a. Controlplane VPC"
   }
 }
 
-# Create regional subnet B
-resource "aws_subnet" "aws-vpc-controlplane-subnet-b" {
-  depends_on        = [aws_vpc.aws-vpc-controlplane]
-  vpc_id            = aws_vpc.aws-vpc-controlplane.id 
-  cidr_block        = var.controlplane-subnet-b-cidr
+resource "aws_default_subnet" "aws-vpc-controlplane-subnet-b" {
   availability_zone = "us-east-1b"
+
   tags = {
-    Name = "aws-vpc-controlplane-subnet-b"
+    Name = "Default subnet for us-west-1b"
   }
 }
 
@@ -199,10 +190,8 @@ resource "aws_subnet" "aws-vpc-controlplane-subnet-b" {
 resource "aws_security_group" "aws-vpc-controlplane-sc" {
   name        = "aws-vpc-controlplane-sc"
   description = "Security group for aws-vpc-controlplane"
-  vpc_id      = aws_vpc.aws-vpc-controlplane.id
+  vpc_id      = aws_default_vpc.aws-vpc-controlplane.id
   tags = {
     Name = "aws-vpc-controlplane-sc"
   }
 }
-
-## TODO SC rules for the controlplane??
