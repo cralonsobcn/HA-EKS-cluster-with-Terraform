@@ -2,18 +2,29 @@
 resource "aws_launch_template" "dataplane-node-template" {
   name = "dataplane-node-template"
   description = "Template to be used when setting up a dataplane node"
-  depends_on = [ aws_eks_cluster.eks-cluster ]
-  image_id = "ami-08b5b3a93ed654d19" # AMAZON Linux 2023 x64
+  depends_on = [ aws_eks_cluster.eks-cluster, aws_vpc.aws-vpc-dataplane, aws_key_pair.dataplane-kp, aws_iam_instance_profile.node_instance_profile]
+  image_id = var.dataplane-ami # AMAZON Linux 2023 x64
 
   instance_initiated_shutdown_behavior = "terminate"
 
+  key_name = aws_key_pair.dataplane-kp.key_name # Maps the EC2 template with the key pair
+
   instance_type = "t2.micro"
 
-  placement {
-    availability_zone = "us-west-2a"
+  vpc_security_group_ids = [aws_security_group.aws-vpc-dataplane-sc.id]
+
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      delete_on_termination = true
+      volume_size           = 30
+      volume_type           = "gp2"
+    }
   }
 
-  vpc_security_group_ids = [aws_security_group.aws-vpc-dataplane-sc.id]
+  iam_instance_profile {
+    name = aws_iam_instance_profile.node_instance_profile.name
+  }
 
   tag_specifications {
     resource_type = "instance"
@@ -38,4 +49,10 @@ resource "aws_autoscaling_group" "dataplane-group" {
     id      = aws_launch_template.dataplane-node-template.id
     version = "$Latest"
   }
+}
+
+# Do not hardcode public key here
+resource "aws_key_pair" "dataplane-kp" {
+  key_name   = "dataplane-kp"
+  public_key = ""
 }
