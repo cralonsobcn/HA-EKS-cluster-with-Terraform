@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -o xtrace
+/etc/eks/bootstrap.sh eks-demo
 
 # container runtime
 dnf install -y docker
