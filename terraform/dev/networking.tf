@@ -16,9 +16,10 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-a" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-a-cidr
+  map_public_ip_on_launch = true  # Ensures public IP assignme
   availability_zone = "us-east-1a"
   tags = {
-    Name = "aws-vpc-subnet-a"
+    Name = "aws-vpc-dataplane-subnet-a"
   }
 }
 
@@ -27,9 +28,10 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-b" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-b-cidr
+  map_public_ip_on_launch = true  # Ensures public IP assignme
   availability_zone = "us-east-1b"
   tags = {
-    Name = "aws-vpc-subnet-b"
+    Name = "aws-vpc-dataplane-subnet-b"
   }
 }
 
@@ -38,9 +40,10 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-c" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-c-cidr
+  map_public_ip_on_launch = true  # Ensures public IP assignment
   availability_zone = "us-east-1c"
   tags = {
-    Name = "aws-vpc-subnet-c"
+    Name = "aws-vpc-dataplane-subnet-c"
   }
 }
 
@@ -53,51 +56,14 @@ resource "aws_security_group" "aws-vpc-dataplane-sc" {
     Name = "aws-vpc-dataplane-sc"
   }
 }
-
-# Create HTTP Ingress rule
-resource "aws_security_group_rule" "aws-vpc-dataplane-sc-ingress-http" {
+# Create Ingress rule to everywhere
+resource "aws_security_group_rule" "aws-vpc-dataplane-sc-ingress-all" {
   type              = "ingress"
   depends_on        = [aws_security_group.aws-vpc-dataplane-sc]
-  description       = "Allows HTTP connections from everywhere"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.aws-vpc-dataplane-sc.id
-}
-
-# Create HTTPS Ingress rule
-resource "aws_security_group_rule" "aws-vpc-dataplane-sc-ingress-https" {
-  type              = "ingress"
-  depends_on        = [aws_security_group.aws-vpc-dataplane-sc]
-  description       = "Allows HTTPS connections from everywhere"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.aws-vpc-dataplane-sc.id
-}
-
-# Create SSH Ingress rule
-resource "aws_security_group_rule" "aws-vpc-dataplane-sc-ingress-ssh" {
-  type              = "ingress"
-  depends_on        = [aws_security_group.aws-vpc-dataplane-sc]
-  description       = "Allows SSH connections from everywhere"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.aws-vpc-dataplane-sc.id
-}
-
-# Create MySQL Ingress rule
-resource "aws_security_group_rule" "aws-vpc-dataplane-sc-ingress-mysql" {
-  type              = "ingress"
-  depends_on        = [aws_security_group.aws-vpc-dataplane-sc]
-  description       = "Allows MySQL connections from everywhere"
-  from_port         = 3306
-  to_port           = 3306
-  protocol          = "tcp"
+  description       = "Allows all connections from everywhere"
+  from_port         = 0
+  to_port           = 0    # semantically equivalent to all ports
+  protocol          = "-1" # semantically equivalent to all protocols
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.aws-vpc-dataplane-sc.id
 }
@@ -135,8 +101,12 @@ resource "aws_route_table" "aws-vpc-dataplane-rt" {
     cidr_block = "10.0.0.0/16"
     gateway_id = "local"
   }
+  route {
+    cidr_block = aws_default_vpc.aws-vpc-controlplane.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.controlplane-dataplane-peering.id
+  }
   tags = {
-    Name = "Routing Table for aws-vpc-dataplane"
+    Name = "aws-vpc-dataplane-rt"
   }
 }
 
@@ -163,35 +133,103 @@ resource "aws_route_table_association" "aws-vpc-dataplane-rt-association-c" {
 
 ## ( -- EKS Control Plane -- )
 
+# Associates the default VPC with the EKS controlplane
 resource "aws_default_vpc" "aws-vpc-controlplane" {
-
   tags = {
     Name = "Default VPC"
   }
 }
 
+# Associates the default subnet-a with the EKS controlplane
 resource "aws_default_subnet" "aws-vpc-controlplane-subnet-a" {
   availability_zone = "us-east-1a"
-
   tags = {
-    Name = "Default subnet for us-west-1a. Controlplane VPC"
+    Name = "aws-vpc-controlplane-subnet-a"
   }
 }
 
+# Associates the default subnet-b with the EKS controlplane
 resource "aws_default_subnet" "aws-vpc-controlplane-subnet-b" {
   availability_zone = "us-east-1b"
-
   tags = {
-    Name = "Default subnet for us-west-1b"
+    Name = "aws-vpc-controlplane-subnet-b"
   }
+}
+
+# Default IW attached to the Default VPC
+data "aws_internet_gateway" "default_internet_gateway" {
+  filter {
+    name   = "attachment.vpc-id"
+    values = [aws_default_vpc.aws-vpc-controlplane.id]
+  }
+}
+
+# Sets the default route table 
+resource "aws_default_route_table" "aws-vpc-controlplane-rt" {
+  default_route_table_id = aws_default_vpc.aws-vpc-controlplane.default_route_table_id
+  depends_on = [aws_default_vpc.aws-vpc-controlplane]
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = data.aws_internet_gateway.default_internet_gateway.id # Maps the default IGW
+  }
+  route {
+    cidr_block = aws_default_vpc.aws-vpc-controlplane.cidr_block
+    gateway_id = "local"
+  }
+  route {
+    cidr_block = aws_vpc.aws-vpc-dataplane.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.controlplane-dataplane-peering.id
+  }
+  tags = {
+    Name = "Routing Table for aws-vpc-controlplane"
+  }
+}
+
+# Associate the controlplane routing table with its subnet-a
+resource "aws_route_table_association" "aws-vpc-controlplane-rt-association-a" {
+  depends_on     = [aws_default_route_table.aws-vpc-controlplane-rt]
+  subnet_id      = aws_default_subnet.aws-vpc-controlplane-subnet-a.id
+  route_table_id = aws_default_route_table.aws-vpc-controlplane-rt.id
+}
+
+# Associate the controlplane routing table with its subnet-b
+resource "aws_route_table_association" "aws-vpc-controlplane-rt-association-b" {
+  depends_on     = [aws_default_route_table.aws-vpc-controlplane-rt]
+  subnet_id      = aws_default_subnet.aws-vpc-controlplane-subnet-b.id
+  route_table_id = aws_default_route_table.aws-vpc-controlplane-rt.id
 }
 
 # Create security group to be attached to the controlplane VPC
-resource "aws_security_group" "aws-vpc-controlplane-sc" {
-  name        = "aws-vpc-controlplane-sc"
-  description = "Security group for aws-vpc-controlplane"
+resource "aws_default_security_group" "aws-vpc-controlplane-sc" {
   vpc_id      = aws_default_vpc.aws-vpc-controlplane.id
   tags = {
     Name = "aws-vpc-controlplane-sc"
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+## ( -- EKS VPC Peering -- )
+resource "aws_vpc_peering_connection" "controlplane-dataplane-peering" {
+  peer_owner_id = data.aws_caller_identity.account_id.account_id # Gets the AWS Account ID from variables.aws_caller_identity
+  depends_on = [ aws_default_vpc.aws-vpc-controlplane, aws_vpc.aws-vpc-dataplane ]
+  peer_vpc_id   = aws_vpc.aws-vpc-dataplane.id
+  vpc_id        = aws_default_vpc.aws-vpc-controlplane.id
+  auto_accept   = true
+
+  tags = {
+    Name = "VPC Peering between the EKS Controlplane and the Dataplane"
   }
 }
