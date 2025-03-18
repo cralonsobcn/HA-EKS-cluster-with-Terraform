@@ -1,10 +1,11 @@
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template
+# Elaborates the template that will be used by each worker node of the dataplane
 resource "aws_launch_template" "dataplane-node-template" {
   name = "dataplane-node-template"
   description = "Template to be used when setting up a dataplane node"
   depends_on = [ aws_eks_cluster.eks-cluster, aws_vpc.aws-vpc-dataplane, aws_key_pair.dataplane-kp, aws_iam_instance_profile.node_instance_profile]
-  image_id = var.dataplane-ami # AMAZON Linux 2023 x64
 
+  image_id = var.dataplane-ami # AMAZON Linux 2023 x64
+  
   instance_initiated_shutdown_behavior = "terminate"
 
   key_name = aws_key_pair.dataplane-kp.key_name # Maps the EC2 template with the key pair
@@ -34,10 +35,13 @@ resource "aws_launch_template" "dataplane-node-template" {
     }
   }
 
+  private_dns_name_options {
+    enable_resource_name_dns_a_record = true
+  } 
   user_data = filebase64("${path.module}/userdata.sh")
 }
 
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
+# Creates the autoscaling group with the worker nodes that forms the dataplane
 resource "aws_autoscaling_group" "dataplane-group" {
   depends_on = [ aws_launch_template.dataplane-node-template ]
   desired_capacity   = 3
@@ -51,8 +55,14 @@ resource "aws_autoscaling_group" "dataplane-group" {
   }
 }
 
-# Do not hardcode public key here
+# Dataplane key pair. Pulls public key from the variable which in turn pulls it from env variable
 resource "aws_key_pair" "dataplane-kp" {
   key_name   = "dataplane-kp"
-  public_key = ""
+  public_key = var.dataplane_public_key
+}
+
+# Outputs the arn of the role that will be used in the ConfigMap aws-auth-cm.yaml later
+output "dataplane-role-arn" {
+  depends_on = [ aws_iam_role.node_instance_role ]
+  value = aws_iam_role.node_instance_role.arn
 }
