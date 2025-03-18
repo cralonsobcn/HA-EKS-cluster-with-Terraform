@@ -73,12 +73,6 @@ resource "aws_iam_role_policy_attachment" "node_instance_role_SSMMIC" {
   role       = aws_iam_role.node_instance_role.name
 }
 
-# resource "aws_iam_role_policy_attachment" "node_instance_role_loadbalancer" {
-#  policy_arn = aws_iam_policy.loadbalancer_policy.arn
-#  role       = aws_iam_role.node_instance_role.name
-#}
-
-
 ## ( -- IAM CodePipeline -- ) ## TODO
 data "aws_iam_policy_document" "assume_role" {
   statement {
