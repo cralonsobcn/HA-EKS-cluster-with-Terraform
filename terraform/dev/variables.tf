@@ -6,7 +6,16 @@ variable "aws_region" {
   description = "Default AWS region to deploy resources"
 }
 
-## ( -- AWS Networking -- )
+variable "eks-cluster-name" {
+  type        = string
+  default     = "eks-demo"
+  description = "Name of the EKS Cluster Role"
+}
+
+data "aws_caller_identity" "account_id" {
+}
+
+## ( -- AWS Networking EKS Controlplane -- )
 variable "vpc-controlplane-name" {
   type = string
   default = "vpc-controlplane"
@@ -32,7 +41,8 @@ variable "controlplane-subnet-b-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-controlplane-subnet-b"
 }
 
-variable "vpc-dataplane-name" { # 
+## ( -- AWS Networking EKS Dataplane -- )
+variable "vpc-dataplane-name" { 
   type        = string
   default     = "vpc-dataplane"
   description = "Name of the VPC assigned to the EKS dataplane"
@@ -62,19 +72,16 @@ variable "dataplane-subnet-c-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-c"
 }
 
-## ( -- AWS EKS -- )
-variable "eks-cluster-name" {
-  type        = string
-  default     = "eks-demo"
-  description = "Name of the EKS Cluster Role"
-}
-
-## ( -- AWS CodePipeline -- )
-
-## ( -- AWS Compute -- )
 variable "dataplane-ami" {
   type = string
   default = "ami-08b5b3a93ed654d19"
   description = "Amazon Linux 2023 x64"
 }
 
+variable "dataplane_public_key" {
+  type = string
+  description = "Public key for the dataplane key pair"
+  sensitive = true
+}
+
+## ( -- AWS CodePipeline -- )
