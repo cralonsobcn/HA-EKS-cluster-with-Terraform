@@ -74,8 +74,8 @@ variable "dataplane-subnet-c-cidr" {
 
 variable "dataplane-ami" {
   type = string
-  default = "ami-08b5b3a93ed654d19"
-  description = "Amazon Linux 2023 x64"
+  default = "ami-04aa00acb1165b32a"
+  description = "Amazon Linux 2 Kernel 5.10 AMI 2.0.20250305.0 x86_64 HVM gp2"
 }
 
 variable "dataplane_public_key" {
