@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
+set -o xtrace
+set -o pipefail
+set -o nounset
+set -o errexit
+
+export CLUSTER_NAME="eks-demo"
+export REGION="us-east-1"
+export BUCKET="cralonso-tfpipeline-eks-project"
 
 # Verify AWS CLI prerequisite
 aws_path="/usr/local/bin/aws"
 if [ ! -x ${aws_path} ]
 then
     echo "[INFO]: Downloading and installing AWS CLI"
-    eval $(curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip")
-    eval $(unzip awscliv2.zip)
-    eval $(./aws/install)
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    ./aws/install
 else
     echo "[INFO]: AWS CLI Already installed"
 fi
@@ -17,10 +25,10 @@ terraform_path="/usr/local/bin/terraform"
 if [ ! -x ${terraform_path} ]
 then
     echo "[INFO]: Downloading and installing Terraform"
-    eval $(wget https://releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip)
-    eval $(unzip terraform_1.11.1_linux_amd64.zip)
-    eval $(mv terraform/ ${terraform_path})
-    eval $(terraform -install-autocomplete)
+    wget https://releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip
+    unzip terraform_1.11.1_linux_amd64.zip
+    mv terraform/ ${terraform_path}
+    terraform -install-autocomplete
 else
     echo "[INFO]: Terraform CLI Already installed"
 fi
@@ -62,9 +70,7 @@ do
 done
 
 # S3 bucket to store TF state
-BUCKET="cralonso-tfpipeline-eks-project"
-aws_region="us-east-1"
-if [ ! $(aws s3 ls | grep ${BUCKET}) ] 
+if [ ! $(aws s3 ls | grep ${BUCKET}) ]  # Impreve this conditional
 then
     aws s3 mb s3://${BUCKET}
     aws s3api put-bucket-versioning --bucket ${BUCKET} --versioning-configuration Status=Enabled
@@ -73,12 +79,12 @@ else
 fi
 
 # Generate key pair if necessary and export it to the Terraform variable
-if [ ! "${HOME}/.ssh/id_rsa" ]
+if [ ! -f "${HOME}/dataplane-kp.pem" ]
 then
-    echo "[INFO]: Generating a new key pair and exporting the public key to TF_VAR"
-    ssh-keygen -t rsa -N "" -f "${HOME}/.ssh/id_rsa"
-    export TF_VAR_dataplane_public_key="$(cat ${HOME}/.ssh/id_rsa.pub)"
+    echo "[INFO]: Generating a new key pair and exporting the public key to TF_VAR_dataplane_public_key"
+    ssh-keygen -t rsa -N -f ${HOME}/dataplane-kp.pem
+    export TF_VAR_dataplane_public_key=$(cat ${HOME}/dataplane-kp.pem.pub)
 else
-    export TF_VAR_dataplane-public-key="$(cat ${HOME}/.ssh/id_rsa.pub)"
-    echo "[INFO]: Key already present. Exporting the public key to TF_VAR"
+    export TF_VAR_dataplane-public_key="$(cat ${HOME}/dataplane-kp.pem.pub)"
+    echo "[INFO]: Key already present. Exporting the public key to TF_VAR_dataplane_public_key"
 fi
