@@ -78,6 +78,10 @@ variable "dataplane-ami" {
   description = "Amazon Linux 2 Kernel 5.10 AMI 2.0.20250305.0 x86_64 HVM gp2"
 }
 
+data "aws_ssm_parameter" "node_ami" {
+  name = "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id"
+}
+
 variable "dataplane_public_key" {
   type = string
   description = "Public key for the dataplane key pair"

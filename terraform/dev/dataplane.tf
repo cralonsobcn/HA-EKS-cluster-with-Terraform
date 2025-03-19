@@ -4,7 +4,7 @@ resource "aws_launch_template" "dataplane-node-template" {
   description = "Template to be used when setting up a dataplane node"
   depends_on = [ aws_eks_cluster.eks-cluster, aws_vpc.aws-vpc-dataplane, aws_key_pair.dataplane-kp, aws_iam_instance_profile.node_instance_profile]
 
-  image_id = var.dataplane-ami # AMAZON Linux 2023 x64
+  image_id = data.aws_ssm_parameter.node_ami.value # AMAZON Linux 2023 x64
   
   instance_initiated_shutdown_behavior = "terminate"
 
