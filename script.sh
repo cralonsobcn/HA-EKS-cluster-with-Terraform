@@ -7,10 +7,12 @@ set -o errexit
 export CLUSTER_NAME="eks-demo"
 export REGION="us-east-1"
 export BUCKET="cralonso-tfpipeline-eks-project"
+export TERRAFORM_PATH="/usr/local/bin/terraform"
+export FOLDER_LIST=("terraform" "terraform/dev" "terraform/test" "terraform/prod" "terraform/modules")
+export AWS_PATH="/usr/local/bin/aws"
 
 # Verify AWS CLI prerequisite
-aws_path="/usr/local/bin/aws"
-if [ ! -x ${aws_path} ]
+if [ ! -x ${AWS_PATH} ]
 then
     echo "[INFO]: Downloading and installing AWS CLI"
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -21,13 +23,12 @@ else
 fi
 
 # Verify Terraform CLI prerequisite
-terraform_path="/usr/local/bin/terraform"
-if [ ! -x ${terraform_path} ]
+if [ ! -x ${TERRAFORM_PATH} ]
 then
     echo "[INFO]: Downloading and installing Terraform"
     wget https://releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip
     unzip terraform_1.11.1_linux_amd64.zip
-    mv terraform/ ${terraform_path}
+    mv terraform/ ${TERRAFORM_PATH}
     terraform -install-autocomplete
 else
     echo "[INFO]: Terraform CLI Already installed"
@@ -57,8 +58,7 @@ else
 fi
 
 # Sets Terraform folder structure
-folder_list=("terraform" "terraform/dev" "terraform/test" "terraform/prod" "terraform/modules")
-for folder in ${folder_list[@]}
+for folder in ${FOLDER_LIST[@]}
 do
     if [ ! -d "${PWD}/${folder}" ]
     then
