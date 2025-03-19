@@ -87,5 +87,3 @@ variable "dataplane_public_key" {
   description = "Public key for the dataplane key pair"
   sensitive = true
 }
-
-## ( -- AWS CodePipeline -- )
