@@ -3,10 +3,6 @@ set -o xtrace
 export CLUSTER_NAME="eks-demo"
 export REGION="us-east-1"
 
-# container runtime
-yum install -y docker
-systemctl --now enable docker
-
 # kubectl
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -104,6 +100,3 @@ bash /etc/eks/bootstrap.sh ${CLUSTER_NAME} --b64-cluster-ca ${CLUSTER_CA_CERTIFI
 swapoff -a
 systemctl enable --now kubelet
 systemctl daemon-reload
-
-
-# wget https://raw.githubusercontent.com/dbt-labs/amazon-eks-ami/refs/heads/master/files/bootstrap.sh -O /etc/eks/bootstrap.sh # Amazon Linux 2 does not have this script
