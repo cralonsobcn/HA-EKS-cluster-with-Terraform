@@ -72,14 +72,8 @@ variable "dataplane-subnet-c-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-c"
 }
 
-variable "dataplane-ami" {
-  type = string
-  default = "ami-04aa00acb1165b32a"
-  description = "Amazon Linux 2 Kernel 5.10 AMI 2.0.20250305.0 x86_64 HVM gp2"
-}
-
 data "aws_ssm_parameter" "node_ami" {
-  name = "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id"
+  name = "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" # Maps to an EKS ready ami with bootstrap.sh and dockerd installed
 }
 
 variable "dataplane_public_key" {
