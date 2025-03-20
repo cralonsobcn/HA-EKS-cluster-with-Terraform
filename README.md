@@ -61,7 +61,7 @@ Once the deployment is completed, you need to copy the output value *`dataplane-
 Update kube-config to access the EKS control plane with:
 - *`$ aws eks update-kubeconfig --region us-east-1 --name eks-demo`*
 
-Join the dataplane nodes with the Controlplane with:
+Join the dataplane nodes with the Controlplane with *`kubectl`* and allow EKS 60 seconds to detect the autoscaling group.
 - *`$ kubectl apply -f aws-auth-cm.yaml`*
 
 # Observations
