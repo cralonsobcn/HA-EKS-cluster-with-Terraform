@@ -66,12 +66,12 @@ else
 fi
 
 # Generate key pair if necessary and export it to the Terraform variable
-if [ ! -f "${HOME}/dataplane-kp.pem" ]
+if [ ! -f "${PWD}/dataplane-kp.pem" ]
 then
     echo "[INFO]: Generating a new key pair and exporting the public key to TF_VAR_dataplane_public_key"
-    ssh-keygen -t rsa -N -f ${HOME}/dataplane-kp.pem
-    export TF_VAR_dataplane_public_key=$(cat ${HOME}/dataplane-kp.pem.pub)
+    ssh-keygen -t rsa -N -f ${PWD}/dataplane-kp.pem
+    export TF_VAR_dataplane_public_key=$(cat ${PWD}/dataplane-kp.pem.pub)
 else
-    export TF_VAR_dataplane-public_key="$(cat ${HOME}/dataplane-kp.pem.pub)"
+    export TF_VAR_dataplane-public_key="$(cat ${PWD}/dataplane-kp.pem.pub)"
     echo "[INFO]: Key already present. Exporting the public key to TF_VAR_dataplane_public_key"
 fi
