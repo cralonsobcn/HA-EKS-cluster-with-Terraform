@@ -52,6 +52,7 @@ export CLUSTER_IP=$(aws eks describe-cluster --query "cluster.kubernetesNetworkC
 export APISERVER_ENDPOINT=$(aws eks describe-cluster --query "cluster.endpoint" --output text --name ${CLUSTER_NAME} --region ${REGION})
 export CLUSTER_CA_CERTIFICATE=$(aws eks describe-cluster --query "cluster.certificateAuthority.data" --output text --name ${CLUSTER_NAME} --region ${REGION})
 
+# Authenticates the worker node against the dataplane API Server
 bash /etc/eks/bootstrap.sh ${CLUSTER_NAME} --b64-cluster-ca ${CLUSTER_CA_CERTIFICATE} --apiserver-endpoint ${APISERVER_ENDPOINT} --dns-cluster-ip ${CLUSTER_IP}
 
 swapoff -a
