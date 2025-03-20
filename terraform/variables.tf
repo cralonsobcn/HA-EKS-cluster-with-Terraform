@@ -78,6 +78,18 @@ variable "dataplane-subnet-c-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-dataplane-subnet-c"
 }
 
+variable "dataplane_template_name" {
+  type = string
+  default = "dataplane-node-template"
+  description = "Name of the dataplane worker node template"
+}
+
+variable "dataplane_instance_type" {
+  type = string
+  default = "t2.micro" # Restricted to t2.micro
+  description = "Instance type that will be used to deploy the EC2 instances of the Autoscaling group"
+}
+
 data "aws_ssm_parameter" "node_ami" {
   name = "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" # Maps to an EKS ready ami with bootstrap.sh and dockerd installed
 }
