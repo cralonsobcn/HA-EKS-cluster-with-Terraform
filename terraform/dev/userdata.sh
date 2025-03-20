@@ -50,47 +50,6 @@ cat <<EOF > /etc/systemd/system/kubelet.service
     WantedBy=multi-user.target
 EOF
 
-# Overwrites the kubelet-config.json to add the containerRuntimeEndpoint
-cat <<EOF > /etc/kubernetes/kubelet/kubelet-config.json
-    {
-    "kind": "KubeletConfiguration",
-    "apiVersion": "kubelet.config.k8s.io/v1beta1",
-    "address": "0.0.0.0",
-    "containerRuntimeEndpoint": "unix:///var/run/docker.sock",
-    "authentication": {
-      "anonymous": {
-        "enabled": false
-      },
-      "webhook": {
-        "cacheTTL": "2m0s",
-        "enabled": true
-      },
-      "x509": {
-        "clientCAFile": "/etc/kubernetes/pki/ca.crt"
-      }
-    },
-    "authorization": {
-      "mode": "Webhook",
-      "webhook": {
-        "cacheAuthorizedTTL": "5m0s",
-        "cacheUnauthorizedTTL": "30s"
-      }
-    },
-    "clusterDomain": "cluster.local",
-    "hairpinMode": "hairpin-veth",
-    "readOnlyPort": 0,
-    "cgroupDriver": "cgroupfs",
-    "cgroupRoot": "/",
-    "featureGates": {
-      "RotateKubeletServerCertificate": true
-    },
-    "protectKernelDefaults": true,
-    "serializeImagePulls": false,
-    "serverTLSBootstrap": true,
-    "tlsCipherSuites": ["TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_GCM_SHA256"]
-}
-EOF
-
 export CLUSTER_IP=$(aws eks describe-cluster --query "cluster.kubernetesNetworkConfig.serviceIpv4Cidr" --output text --name ${CLUSTER_NAME} --region ${REGION})
 export APISERVER_ENDPOINT=$(aws eks describe-cluster --query "cluster.endpoint" --output text --name ${CLUSTER_NAME} --region ${REGION})
 export CLUSTER_CA_CERTIFICATE=$(aws eks describe-cluster --query "cluster.certificateAuthority.data" --output text --name ${CLUSTER_NAME} --region ${REGION})
