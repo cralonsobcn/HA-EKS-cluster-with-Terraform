@@ -8,7 +8,6 @@ export CLUSTER_NAME="eks-demo"
 export REGION="us-east-1"
 export BUCKET="cralonso-tfpipeline-eks-project"
 export TERRAFORM_PATH="/usr/local/bin/terraform"
-export FOLDER_LIST=("terraform" "terraform/dev" "terraform/test" "terraform/prod" "terraform/modules")
 export AWS_PATH="/usr/local/bin/aws"
 
 # Verify AWS CLI prerequisite
@@ -56,18 +55,6 @@ EOF
 else
     echo "[INFO]: Kubernetes repo already installed."
 fi
-
-# Sets Terraform folder structure
-for folder in ${FOLDER_LIST[@]}
-do
-    if [ ! -d "${PWD}/${folder}" ]
-    then
-        mkdir "${PWD}/${folder}"
-        echo "[INFO]:  Adding ${PWD}/${folder} folder."
-    else
-        echo "[INFO]: ${PWD}/${folder} already exists"
-    fi
-done
 
 # S3 bucket to store TF state
 if [ ! $(aws s3 ls | grep ${BUCKET}) ]  # Impreve this conditional
