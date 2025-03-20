@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "cralonso-tfpipeline-eks-project"
+    bucket = "cralonso-tf-eks-project"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }

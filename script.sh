@@ -6,7 +6,7 @@ set -o errexit
 
 export CLUSTER_NAME="eks-demo"
 export REGION="us-east-1"
-export BUCKET="cralonso-tfpipeline-eks-project"
+export BUCKET="cralonso-tf-eks-project"
 export TERRAFORM_PATH="/usr/local/bin/terraform"
 export AWS_PATH="/usr/local/bin/aws"
 
