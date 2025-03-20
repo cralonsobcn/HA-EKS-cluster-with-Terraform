@@ -1,7 +1,7 @@
 # **Introduction**
 This repo deploys a highly available EKS cluster with an Autoscaling Group in region *`us-east-1`* across 3 different Availability Zones.
 
-Because I've used Kodekloud Playgrounds to elaborate this repo, some actions and resources were restricted or had technical limitations.
+Because I've worked with [AWS Kodekloud Playgrounds](https://kodekloud.com/cloud-playgrounds/aws) to elaborate this repo, some actions and resources were restricted or had technical limitations.
 
 As consequence, certain actions such as using specific terraform modules, selecting instance types other than *`t2.micro`*, setting custom EKS cluster naming or using an up to date EKS optimized ami, were not possible.
 
