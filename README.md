@@ -3,7 +3,7 @@ This repo deploys a highly available EKS cluster with an Autoscaling Group in re
 
 Because I've used Kodekloud Playgrounds to elaborate this repo, some actions and resources were restricted or had technical limitations.
 
-As consequence using specific module providers, machine types other than *`t2.micro`* or an up to date EKS optimized ami, for example, was not entirely possible.
+As consequence, certain actions such as using specific terraform modules, selecting instance types other than *`t2.micro`*, setting custom EKS cluster naming or using an up to date EKS optimized ami, were not possible.
 
 ```
 📁 /
