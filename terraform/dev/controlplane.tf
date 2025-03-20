@@ -27,7 +27,7 @@ resource "aws_eks_cluster" "eks-cluster" {
 
   # Sets the subnets to be used by the EKS Controlplane
   vpc_config {
-    subnet_ids = [aws_default_subnet.aws-vpc-controlplane-subnet-a.id, aws_default_subnet.aws-vpc-controlplane-subnet-b.id]
+    subnet_ids = [aws_default_subnet.aws-vpc-controlplane-subnet-a.id, aws_default_subnet.aws-vpc-controlplane-subnet-b.id, aws_default_subnet.aws-vpc-controlplane-subnet-c.id]
     security_group_ids = [aws_default_security_group.aws-vpc-controlplane-sc.id]
   }
 
