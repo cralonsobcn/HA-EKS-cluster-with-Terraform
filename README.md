@@ -1,4 +1,4 @@
-# Introduction
+# **Introduction**
 This repo deploys a highly available EKS cluster with an Autoscaling Group in region *`us-east-1`* across 3 different Availability Zones.
 Because I've used Kodekloud Playgrounds to elaborate this repo, some actions and resources were restricted or had technical limitations to avoid an excessive billing charge.
 
@@ -19,7 +19,9 @@ As consequence using specific module providers, machine types other than *`t2.mi
 -  Kubernetes
 -  Terraform AWS Provider
 
-# Prerequisites
+![Diagram](HA-EKS.webp)
+
+# **Prerequisites**
 
 Run *`./script.sh`* to verify if you meet all the prerequisites. The script must be executable *`sudo chmod u+x script.sh`*.
 
