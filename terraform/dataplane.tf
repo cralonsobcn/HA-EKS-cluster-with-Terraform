@@ -1,6 +1,6 @@
 # Elaborates the template that will be used by each worker node of the dataplane
 resource "aws_launch_template" "dataplane-node-template" {
-  name = "dataplane-node-template"
+  name = var.dataplane_template_name
   description = "Template to be used when setting up a dataplane node"
   depends_on = [ aws_eks_cluster.eks-cluster, aws_vpc.aws-vpc-dataplane, aws_key_pair.dataplane-kp, aws_iam_instance_profile.node_instance_profile]
 
@@ -10,7 +10,7 @@ resource "aws_launch_template" "dataplane-node-template" {
 
   key_name = aws_key_pair.dataplane-kp.key_name # Maps the EC2 template with the key pair
 
-  instance_type = "t2.micro"
+  instance_type = var.dataplane_instance_type
 
   vpc_security_group_ids = [aws_security_group.aws-vpc-dataplane-sc.id]
 
@@ -31,7 +31,7 @@ resource "aws_launch_template" "dataplane-node-template" {
     resource_type = "instance"
 
     tags = {
-      Name = "dataplane-node-template"
+      Name = var.dataplane_template_name
     }
   }
 
