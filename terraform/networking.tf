@@ -16,7 +16,7 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-a" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-a-cidr
-  map_public_ip_on_launch = false  # Ensures public IP assignme
+  map_public_ip_on_launch = true  # Ensures public IP assignme
   availability_zone = "us-east-1a"
   tags = {
     Name = "aws-vpc-dataplane-subnet-a"
@@ -28,7 +28,7 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-b" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-b-cidr
-  map_public_ip_on_launch = false  # Ensures public IP assignme
+  map_public_ip_on_launch = true  # Ensures public IP assignme
   availability_zone = "us-east-1b"
   tags = {
     Name = "aws-vpc-dataplane-subnet-b"
@@ -40,7 +40,7 @@ resource "aws_subnet" "aws-vpc-dataplane-subnet-c" {
   depends_on        = [aws_vpc.aws-vpc-dataplane]
   vpc_id            = aws_vpc.aws-vpc-dataplane.id
   cidr_block        = var.dataplane-subnet-c-cidr
-  map_public_ip_on_launch = false  # Ensures public IP assignment
+  map_public_ip_on_launch = true  # Ensures public IP assignment
   availability_zone = "us-east-1c"
   tags = {
     Name = "aws-vpc-dataplane-subnet-c"
