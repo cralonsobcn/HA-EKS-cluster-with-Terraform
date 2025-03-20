@@ -15,7 +15,7 @@ variable "eks-cluster-name" {
 data "aws_caller_identity" "account_id" {
 }
 
-## ( -- AWS Networking EKS Controlplane -- )
+## ( -- EKS Controlplane -- )
 variable "vpc-controlplane-name" {
   type = string
   default = "vpc-controlplane"
@@ -41,7 +41,13 @@ variable "controlplane-subnet-b-cidr" {
   description = "CIDR block assigned to the subnet aws-vpc-controlplane-subnet-b"
 }
 
-## ( -- AWS Networking EKS Dataplane -- )
+variable "controlplane-kubernetes-version" {
+  type = string
+  default = "1.32"
+  description = "Kubernetes version to be used by the EKS controlplane"
+}
+
+## ( -- EKS Dataplane -- )
 variable "vpc-dataplane-name" { 
   type        = string
   default     = "vpc-dataplane"
