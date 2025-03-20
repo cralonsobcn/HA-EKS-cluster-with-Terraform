@@ -23,7 +23,7 @@ resource "aws_eks_cluster" "eks-cluster" {
   }
 
   role_arn = aws_iam_role.eks-cluster-role.arn
-  version  = "1.32"
+  version  = var.controlplane-kubernetes-version
 
   # Sets the subnets to be used by the EKS Controlplane
   vpc_config {
