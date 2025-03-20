@@ -156,6 +156,14 @@ resource "aws_default_subnet" "aws-vpc-controlplane-subnet-b" {
   }
 }
 
+# Associates the default subnet-c with the EKS controlplane
+resource "aws_default_subnet" "aws-vpc-controlplane-subnet-c" {
+  availability_zone = "us-east-1c"
+  tags = {
+    Name = "aws-vpc-controlplane-subnet-c"
+  }
+}
+
 # Default IW attached to the Default VPC
 data "aws_internet_gateway" "default_internet_gateway" {
   filter {
@@ -196,6 +204,13 @@ resource "aws_route_table_association" "aws-vpc-controlplane-rt-association-a" {
 resource "aws_route_table_association" "aws-vpc-controlplane-rt-association-b" {
   depends_on     = [aws_default_route_table.aws-vpc-controlplane-rt]
   subnet_id      = aws_default_subnet.aws-vpc-controlplane-subnet-b.id
+  route_table_id = aws_default_route_table.aws-vpc-controlplane-rt.id
+}
+
+# Associate the controlplane routing table with its subnet-b
+resource "aws_route_table_association" "aws-vpc-controlplane-rt-association-c" {
+  depends_on     = [aws_default_route_table.aws-vpc-controlplane-rt]
+  subnet_id      = aws_default_subnet.aws-vpc-controlplane-subnet-c.id
   route_table_id = aws_default_route_table.aws-vpc-controlplane-rt.id
 }
 
