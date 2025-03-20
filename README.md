@@ -1,31 +1,78 @@
 # Introduction
-Terraform workspace default
-Moving within the AWS free tier to avoid excessive charges.
-Services: VPC, ECR, EKS, Code Pipeline, Secrets Manager, S3, RDS, Github Actions, Git.
+This repo deploys a highly available EKS cluster with an Autoscaling Group in region *`us-east-1`* across 3 different Availability Zones.
+Because I've used Kodekloud Playgrounds to elaborate this repo, some actions and resources were restricted or had technical limitations to avoid an excessive billing charge.
+
+As consequence using specific module providers, machine types other than *`t2.micro`* or an up to date EKS optimized ami, for example, was not entirely possible.
+
+**Technologies**:
+- AWS
+  - Networking
+    -  VPC, Subnetting, Routing Tables, VPC Peering
+ -  Compute
+    -  EKS, Autoscaling Group, EC2
+ -  Storage
+    -  S3
+ -  Security & Identity
+    -  IAM Roles, IAM Policies
+-  Git
+-  Bash
+-  Kubernetes
+-  Terraform AWS Provider
 
 # Prerequisites
 
-Run `./script.sh` to auto validate all the prerequisites. The script must be executable `sudo chmod +x script.sh`.
+Run *`./script.sh`* to verify if you meet all the prerequisites. The script must be executable *`sudo chmod u+x script.sh`*.
 
-- An AWS Account
-- Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).ç
-- Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-- Define Terraform folder Structure
+The script checks if:
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) is installed.
+- [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) is installed.
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management) is installed.
+- Defines the project structure.
+
 ```
-📁 terraform/
- ├── 📁 dev/
- │   ├── main.tf
- │   ├── versions.tf
- │   ├── variables.tf
- │   ├── terraform.tfvars
- ├── 📁 test/              
- ├── 📁 prod/  
- ├── 📁 modules/  
- │   ├── eks/
- │   ├── rds/
- │   ├── networking/
- │   ├── monitoring/
- ├── backend.tf
+📁 /
+ ├──📁 terraform/
+ |    ├── aws-auth-cm.yaml
+ |    ├── controlplane.tf
+ |    ├── dataplane.tf
+ |    ├── iam.tf
+ |    ├── networking.tf
+ |    ├── providers.tf
+ |    ├── variables.tf
+ |    ├── userdata.sh
+ ├── script.sh
+ ├── kubelet.service
+ ├── README.md
+```
+
+
+# Deployment
+Generate SSH Key and pass it to the dataplane aws_launch_template through aws_key_pair.dataplane-kp by using TF_VAR_dataplane_key_pair.
+`$ ssh-keygen -t rsa -N "" -f ${HOME}/dataplane-kp.pem`
+`$ export TF_VAR_dataplane_public_key=$(cat "dataplane-kp.pem.pub")` 
+
+Update kube-config to access the control plane via AWS CLI:
+`$ aws eks update-kubeconfig --region us-east-1 --name my-cluster`
+
+Join the dataplane nodes with the Controlplane with:
+`$ kubectl apply -f aws-auth.yaml`
+
+
+
+error: open /var/lib/kubelet/config.yaml: no such file or directory
+
+/etc/systemd/system/kubelet.service
+unknown flag: --container-runtime
+unknown flag: --network-plugin
+
+/etc/kubernetes/kubelet/kubelet-config.json
+containerRuntimeEndpoint: "unix:///var/run/docker.sock"
+
+
+
+# Prerequisites
+
+
 ```
 - Create a S3 bucket to store the tfstate backend. Versioning must be enabled
 - Create an AWS Access Key and Secret Key to allow Terraform deploy resources in AWS
@@ -50,7 +97,6 @@ Ensure you have the following installed:
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Terraform](https://developer.hashicorp.com/terraform/downloads)
-- [Docker](https://www.docker.com/get-started)
 - [GitHub CLI](https://cli.github.com/)
 
 ### ✅ **AWS IAM Setup**
