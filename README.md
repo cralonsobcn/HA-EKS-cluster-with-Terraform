@@ -69,6 +69,8 @@ The worker nodes of the dataplane use an EKS optimized ami that comes with *`boo
 
 The script *`userdata.sh`* that is passed to the EC2 launch template contains a workaround to make communications between the dataplane and EKS controlplane possible.
 
+# Future plans
+In time, I will refactor the documentation of this repo and implement as part of a CI/CD solution with Jenkins.
 
 ## **Terraform Documentation**
 
