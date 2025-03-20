@@ -59,10 +59,10 @@ Navigate into the *`/terraform`* directory and start the terraform deployment cy
 Once the deployment is completed, you need to copy the output value *`dataplane-role-arn`* shown in the console and paste it in the *`aws-auth-cm.yaml > rolearn`* field. 
 
 Update kube-config to access the EKS control plane with:
-*`$ aws eks update-kubeconfig --region us-east-1 --name eks-demo`*
+- *`$ aws eks update-kubeconfig --region us-east-1 --name eks-demo`*
 
 Join the dataplane nodes with the Controlplane with:
-*`$ kubectl apply -f aws-auth-cm.yaml`*
+- *`$ kubectl apply -f aws-auth-cm.yaml`*
 
 # Observations
 The worker nodes of the dataplane use an EKS optimized ami that comes with *`bootstrap.sh`* pre installed. However, since this EKS deployment is using kubernetes 1.32 the ami needs an upgrade.
