@@ -22,9 +22,7 @@ echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 
 aws eks update-kubeconfig --region us-east-1 --name ${CLUSTER_NAME}
 
-
-
-# Overwrites the kubelet services to remove the flag --container-runtime and --network-cni
+# Overwrites the kubelet services without the following flags: --container-runtime --network-cni
 cat <<EOF > /etc/systemd/system/kubelet.service
     [Unit]
     Description=Kubernetes Kubelet
