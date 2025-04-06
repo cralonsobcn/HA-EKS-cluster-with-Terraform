@@ -48,7 +48,7 @@ The script checks if:
 # **Deployment**
 Make sure that the script generates a key pair. Alternatively you can generate a new key pair with the commands below.
 - *`$ ssh-keygen -t rsa -N "" -f ${HOME}/dataplane-kp.pem`*
-- *`$ export TF_VAR_dataplane_public_key=$(cat "dataplane-kp.pem.pub")`*
+- *`$ export TF_VAR_dataplane_public_key=$(cat "${HOME}/dataplane-kp.pem.pub")`*
 
 Navigate into the *`/terraform`* directory and start the terraform deployment cycle. It will take time, so grab a cup of coffee and let it work for 8 minutes or so.
 
