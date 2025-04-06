@@ -1,9 +1,9 @@
 # **Introduction**
 This repo deploys a highly available EKS cluster with an Autoscaling Group in region *`us-east-1`* across 3 different Availability Zones.
 
-Because I've worked with [AWS Kodekloud Playgrounds](https://kodekloud.com/cloud-playgrounds/aws) to elaborate the contents of this repo, some actions and resources were restricted or had technical limitations.
+Since I've used [AWS Kodekloud Playgrounds](https://kodekloud.com/cloud-playgrounds/aws) to elaborate the contents of this repo, some actions and resources were restricted or had technical limitations.
 
-Actions such as using specific terraform modules, selecting instance types other than *`t2.micro`*, setting custom EKS cluster naming or using an up to date EKS optimized ami, were not possible.
+Actions such as using specific terraform modules, selecting instance types other than *`t2.micro`*, setting custom EKS cluster naming or using an up to date EKS optimized ami, were either restricted or not possible.
 
 ```
 📁 /
@@ -70,7 +70,7 @@ The worker nodes of the dataplane use an EKS optimized ami that comes with *`boo
 The script *`userdata.sh`* that is passed to the EC2 launch template contains a workaround to make communications between the dataplane and EKS controlplane possible.
 
 # Future plans
-In time, I will refactor the contents repo and implement them as part of a CI/CD using Jenkins.
+In time, I will refactor the contents of this repo and implement them as part of a CI/CD pipeline using Jenkins.
 
 ## **Terraform Documentation**
 
