@@ -65,9 +65,11 @@ Join the dataplane nodes with the Controlplane with *`kubectl`* and allow EKS 60
 - *`$ kubectl apply -f aws-auth-cm.yaml`*
 
 # Observations
-The worker nodes of the dataplane use an EKS optimized ami that comes with *`bootstrap.sh`* pre installed. However, since this EKS deployment is using kubernetes 1.32 the ami needs an upgrade.
+- The worker nodes of the dataplane use an EKS optimized ami that comes with *`bootstrap.sh`* pre installed. However, since this EKS deployment is using kubernetes 1.32 the ami needs an upgrade.
 
-The script *`userdata.sh`* that is passed to the EC2 launch template contains a workaround to make communications between the dataplane and EKS controlplane possible.
+- The script *`userdata.sh`* that is passed to the EC2 launch template contains a workaround to make communications between the dataplane and EKS controlplane possible.
+
+- The AWS LoadBalancer Controller creates an AWS Application Load Balancer (ALB) when you create a Kubernetes Ingress resource and creates Network Load Balancer (NLB) when you create a Kubernetes service of type LoadBalancer.
 
 # Future plans
 In time, I will refactor the contents of this repo and implement them as part of a CI/CD pipeline using Jenkins.
@@ -94,7 +96,7 @@ In time, I will refactor the contents of this repo and implement them as part of
 | Networking | Compute | Pipeline | Misc. |
 | :----- | :----- | :----- | :----- |
 | [IPv4 VPC CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html#vpc-sizing-ipv4) | [Prerequisites for EC2 Instance Connect](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html) | [CodeStarSourceConnection for GitHub](https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html) | [amazon-elastic-kubernetes-service-course](https://github.com/kodekloudhub/amazon-elastic-kubernetes-service-course) |
-| `--` | [Customize managed nodes with launch templates](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami) | `--` | [Create EKS Cluster with Terraform](https://kodekloud.com/community/t/create-eks-cluster-with-terraform/474374) |
-| `--` | [How do I get my worker nodes to join my Amazon EKS cluster?](https://repost.aws/knowledge-center/eks-worker-nodes-cluster) | `--` | [Get default AWS network resources using Terraform](https://blog.pesky.moe/posts/2025-01-16-default-network/) |
+| [EKS Loadbalancing](https://docs.aws.amazon.com/eks/latest/best-practices/load-balancing.html) | [Customize managed nodes with launch templates](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami) | `--` | [Create EKS Cluster with Terraform](https://kodekloud.com/community/t/create-eks-cluster-with-terraform/474374) |
+| [Route internet traffic with AWS Load Balancer Controller](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html) | [How do I get my worker nodes to join my Amazon EKS cluster?](https://repost.aws/knowledge-center/eks-worker-nodes-cluster) | `--` | [Get default AWS network resources using Terraform](https://blog.pesky.moe/posts/2025-01-16-default-network/) |
 | `--` | [How do I troubleshoot Amazon EKS managed node group creation failures?](https://repost.aws/knowledge-center/resolve-eks-node-failures) | `--` | [Remove container-runtime flag from later versions \#16124](https://github.com/kubernetes/minikube/pull/16124) |
 | `--` | [How do I troubleshoot Amazon EKS managed node group creation failures?](https://repost.aws/knowledge-center/resolve-eks-node-failures) | `--` | `--` |
