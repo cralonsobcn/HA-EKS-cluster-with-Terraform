@@ -27,7 +27,7 @@ then
     echo "[INFO]: Downloading and installing Terraform"
     wget https://releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip
     unzip terraform_1.11.1_linux_amd64.zip
-    mv terraform/ ${TERRAFORM_PATH}
+    mv terraform ${TERRAFORM_PATH}
     terraform -install-autocomplete
 else
     echo "[INFO]: Terraform CLI Already installed"
