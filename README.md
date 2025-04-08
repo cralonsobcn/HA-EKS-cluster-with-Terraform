@@ -22,11 +22,15 @@ Actions such as using specific terraform modules, selecting instance types other
 ```
 
 ## **Technologies**:
-- AWS: VPCs, Subnetting, Routing Tables, VPC Peering, EKS, Autoscaling Group, EC2, S3, IAM Roles, IAM Policies.
-- Git
-- Bash
-- Kubernetes
-- Terraform AWS Provider 
+- ![AWS](https://img.shields.io/badge/AWS-2e2e2e?style=for-the-badge&logo=amazonwebservices)
+  - ![EKS](https://img.shields.io/badge/Elastic%20Kubernetes%20Service-2e2e2e?style=for-the-badge&logo=amazoneks)
+  - ![EC2](https://img.shields.io/badge/Elastic%20Compute%20Cloud-2e2e2e?style=for-the-badge&logo=amazonec2)
+  - ![S3](https://img.shields.io/badge/Simple%20Storage%20Service%20S3-2e2e2e?style=for-the-badge&logo=amazons3)
+  - ![ELB](https://img.shields.io/badge/Elastic%20Load%20Balancing-2e2e2e?style=for-the-badge&logo=awselasticloadbalancing)
+- ![Git](https://img.shields.io/badge/GIT-2e2e2e?style=for-the-badge&logo=git) ![GitHub](https://img.shields.io/badge/GITHUB-2e2e2e?style=for-the-badge&logo=github)
+- ![Bash](https://img.shields.io/badge/BASH-2e2e2e?style=for-the-badge&logo=gnubash)
+- ![K8s](https://img.shields.io/badge/KUBERNETES-2e2e2e?style=for-the-badge&logo=kubernetes)
+- ![Terraform](https://img.shields.io/badge/TERRAFORM-2e2e2e?style=for-the-badge&logo=terraform) ![AWS](https://img.shields.io/badge/AWS%20PROVIDER-2e2e2e?style=for-the-badge&logo=amazonwebservices)
 
 ## **Diagram**
 ![HA-EKS Diagram](HA-EKS.webp)
