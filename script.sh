@@ -72,6 +72,6 @@ then
     ssh-keygen -t rsa -N "" -f ${PWD}/dataplane-kp.pem
     export TF_VAR_dataplane_public_key=$(cat ${PWD}/dataplane-kp.pem.pub)
 else
-    export TF_VAR_dataplane-public_key="$(cat ${PWD}/dataplane-kp.pem.pub)"
+    export TF_VAR_dataplane_public_key="$(cat ${PWD}/dataplane-kp.pem.pub)"
     echo "[INFO]: Key already present. Exporting the public key to TF_VAR_dataplane_public_key"
 fi
