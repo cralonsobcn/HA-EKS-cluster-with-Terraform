@@ -72,31 +72,31 @@ Join the dataplane nodes with the Controlplane with *`kubectl`* and allow EKS 60
 - The AWS LoadBalancer Controller creates an AWS Application Load Balancer (ALB) when you create a Kubernetes Ingress resource and creates Network Load Balancer (NLB) when you create a Kubernetes service of type LoadBalancer.
 
 # Future plans
-In time, I will refactor the contents of this repo and implement them as part of a CI/CD pipeline using Jenkins.
+In time, I will refactor the contents of this repo and implement them as part of a CI/CD pipeline using Jenkins and hopefully switch everything to Terraform modules.
 
 ## **Terraform Documentation**
 
-| Networking | **IAM** | **Pipeline** | **Compute** |
-| :----- | :----- | :----- | :----- |
-| [Resource: aws\_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | [Resource: aws\_iam\_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | [Resource: aws\_codestarconnections\_connection](https://registry.terraform.io/providers/hashicorp/aws/5.90.0/docs/resources/codestarconnections_connection) | [Resource: aws\_eks\_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) |
-| [Resource: aws\_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet#availability_zone-1) | [Resource: aws\_iam\_role\_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | `--` | [Resource: aws\_launch\_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#instance-profile) |
-| [Resource: aws\_default\_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | [Resource: aws\_iam\_user\_policy\_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | `--` | [Resource: aws\_autoscaling\_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) |
-| [Resource: aws\_default\_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_subnet) | `--` | `--` | [Resource: aws\_key\_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) |
-| [Resource: aws\_security\_group](https://registry.terraform.io/providers/hashicorp/aws/5.90.1/docs/resources/security_group) | `--` | `--` | `--` |
-| [Resource: aws\_security\_group\_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | `--` | `--` | `--` |
-| [Resource: aws\_default\_security\_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | `--` | `--` | `--` |
-| [Resource: aws\_internet\_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | `--` | `--` | `--` |
-| [Resource: aws\_route\_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | `--` | `--` | `--` |
-| [Resource: aws\_route\_table\_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | `--` | `--` | `--` |
-| [Resource: aws\_default\_route\_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | `--` | `--` | `--` |
-| [Resource: aws\_vpc\_peering\_connection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection) | `--` | `--` | `--` |
+| **Networking** | **IAM** | **Compute** |
+| :----- | :----- | :----- |
+| [Resource: aws\_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | [Resource: aws\_iam\_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | [Resource: aws\_eks\_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) |
+| [Resource: aws\_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet#availability_zone-1) | [Resource: aws\_iam\_role\_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | [Resource: aws\_launch\_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#instance-profile) |
+| [Resource: aws\_default\_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | [Resource: aws\_iam\_user\_policy\_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment) | [Resource: aws\_autoscaling\_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) |
+| [Resource: aws\_default\_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_subnet) | `--` | [Resource: aws\_key\_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) |
+| [Resource: aws\_security\_group](https://registry.terraform.io/providers/hashicorp/aws/5.90.1/docs/resources/security_group) | `--` | `--` |
+| [Resource: aws\_security\_group\_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | `--` | `--` |
+| [Resource: aws\_default\_security\_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | `--` | `--` |
+| [Resource: aws\_internet\_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | `--` | `--` |
+| [Resource: aws\_route\_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | `--` | `--` |
+| [Resource: aws\_route\_table\_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | `--` | `--` |
+| [Resource: aws\_default\_route\_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | `--` | `--` |
+| [Resource: aws\_vpc\_peering\_connection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection)  | `--` | `--` |
 
 ## **AWS Documentation**
 
-| Networking | Compute | Pipeline | Misc. |
-| :----- | :----- | :----- | :----- |
-| [IPv4 VPC CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html#vpc-sizing-ipv4) | [Prerequisites for EC2 Instance Connect](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html) | [CodeStarSourceConnection for GitHub](https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html) | [amazon-elastic-kubernetes-service-course](https://github.com/kodekloudhub/amazon-elastic-kubernetes-service-course) |
-| [EKS Loadbalancing](https://docs.aws.amazon.com/eks/latest/best-practices/load-balancing.html) | [Customize managed nodes with launch templates](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami) | `--` | [Create EKS Cluster with Terraform](https://kodekloud.com/community/t/create-eks-cluster-with-terraform/474374) |
+| **Networking** | **Compute** | **Misc**. |
+| :----- | :----- | :----- |
+| [IPv4 VPC CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html#vpc-sizing-ipv4) | [Prerequisites for EC2 Instance Connect](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html) | [amazon-elastic-kubernetes-service-course](https://github.com/kodekloudhub/amazon-elastic-kubernetes-service-course) |
+| [EKS Loadbalancing](https://docs.aws.amazon.com/eks/latest/best-practices/load-balancing.html) | [Customize managed nodes with launch templates](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-custom-ami) | [Create EKS Cluster with Terraform](https://kodekloud.com/community/t/create-eks-cluster-with-terraform/474374) |
 | [Route internet traffic with AWS Load Balancer Controller](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html) | [How do I get my worker nodes to join my Amazon EKS cluster?](https://repost.aws/knowledge-center/eks-worker-nodes-cluster) | `--` | [Get default AWS network resources using Terraform](https://blog.pesky.moe/posts/2025-01-16-default-network/) |
 | `--` | [How do I troubleshoot Amazon EKS managed node group creation failures?](https://repost.aws/knowledge-center/resolve-eks-node-failures) | `--` | [Remove container-runtime flag from later versions \#16124](https://github.com/kubernetes/minikube/pull/16124) |
 | `--` | [How do I troubleshoot Amazon EKS managed node group creation failures?](https://repost.aws/knowledge-center/resolve-eks-node-failures) | `--` | `--` |
